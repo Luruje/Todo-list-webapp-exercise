@@ -6,9 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = " project_steps")
-public class ProjectSteps {
-
-
+public class ProjectStep {
 
     @Id
     @GeneratedValue(generator = "inc")
@@ -24,7 +22,7 @@ public class ProjectSteps {
     @JoinColumn(name = "project_id")
     Project project;
 
-    public ProjectSteps() {
+    public ProjectStep() {
     }
 
     public int getId() {

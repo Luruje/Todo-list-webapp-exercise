@@ -5,7 +5,7 @@ import com.todoapp.model.*;
 import com.todoapp.model.projection.GroupReadModel;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProjectService {
@@ -40,7 +40,8 @@ public class ProjectService {
                                     projectStep.getDescription(), deadline.plusDays(projectStep.getDaysToDeadline())
                             )).collect(Collectors.toSet())
                     );
-                    return targetGroup;
+                    targetGroup.setProject(project);
+                    return taskGroupRepository.save(targetGroup);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
 
         return new GroupReadModel(result);

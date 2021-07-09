@@ -18,16 +18,16 @@ public class Project {
     private Set<TaskGroup> groups;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
-    private Set<ProjectSteps> projectSteps;
+    private Set<ProjectStep> projectSteps;
 
     public Project() {
     }
 
-    public Set<ProjectSteps> getProjectSteps() {
+    public Set<ProjectStep> getProjectSteps() {
         return projectSteps;
     }
 
-    public void setProjectSteps(Set<ProjectSteps> projectSteps) {
+    public void setProjectSteps(Set<ProjectStep> projectSteps) {
         this.projectSteps = projectSteps;
     }
 
