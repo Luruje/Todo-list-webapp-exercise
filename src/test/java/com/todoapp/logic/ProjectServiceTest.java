@@ -16,21 +16,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ProjectServiceTest {
-//
-//    void test_findAllPageable_anyPageRequest_returnsPageOfSWCharacters() {
-//        List<SWCharacter> givenSWCharacterList = Arrays.asList(createSWCharacter(),
-//                createSWCharacter());
-//        Page<SWCharacter> givenSWCharacterPage = new PageImpl(givenSWCharacterList);
-//
-//        SWCharacterRepositoryForm mockedSWCharacterRepository = mock(SWCharacterRepositoryForm.class);
-//        when(mockedSWCharacterRepository.findAll(any(PageRequest.class)))
-//                .thenReturn(givenSWCharacterPage);
-//
-//        SWCharacterServiceImpl toTest = new SWCharacterServiceImpl(mockedSWCharacterRepository);
-//        Page<SWCharacter> result = toTest.getAllSWCharacters(PageRequest.of(0, 2));
-//
-//        assertEquals(givenSWCharacterPage, result);
-//    }
 
     @Test
     void test_createGroup_AllowMultipleTasksIsFalse_and_undoneGroupsExist_throws_illegalStateException() {
@@ -72,7 +57,8 @@ class ProjectServiceTest {
         assertEquals("Project with given id not found", result);
 
     }
-@Test
+
+    //to repair
  void test_createGroup_AllowMultipleTasksIsTrue_and_undoneGroupsDoesNotExist_createsAndSaveTaskGroup() {
         //given
         LocalDateTime today = LocalDate.now().atStartOfDay();
