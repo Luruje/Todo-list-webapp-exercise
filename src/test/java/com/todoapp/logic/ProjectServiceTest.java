@@ -29,7 +29,7 @@ class ProjectServiceTest {
         TaskConfigurationProperties mockConfig = mock(TaskConfigurationProperties.class);
         when(mockConfig.getTemplate()).thenReturn(mockTemplate);
         //system under test
-        ProjectService toTest = new ProjectService(null, mockTaskGroupRepo, mockConfig);
+        ProjectService toTest = new ProjectService(null, mockTaskGroupRepo, mockConfig, null);
         String result = assertThrows(IllegalStateException.class, () -> toTest.createGroup(0, null)).getMessage();
         //assert
         assertEquals("Only one undone group from project is allowed", result);
@@ -51,7 +51,7 @@ class ProjectServiceTest {
         ProjectRepository mockProjectRepo = mock(ProjectRepository.class);
         when(mockProjectRepo.findById(anyInt())).thenReturn(Optional.empty());
         //system under test
-        ProjectService toTest = new ProjectService(mockProjectRepo, mockTaskGroupRepo, mockConfig);
+        ProjectService toTest = new ProjectService(mockProjectRepo, mockTaskGroupRepo, mockConfig, null);
         String result = assertThrows(IllegalArgumentException.class, () -> toTest.createGroup(10,null)).getMessage();
         //assert
         assertEquals("Project with given id not found", result);
@@ -74,8 +74,10 @@ class ProjectServiceTest {
         //and
         ProjectRepository mockProjectRepo = mock(ProjectRepository.class);
         when(mockProjectRepo.findById(anyInt())).thenReturn(Optional.of(projectWith("bar", Set.of(-1, -2))));
+        //and
+
         //system under test
-        ProjectService toTest = new ProjectService(mockProjectRepo, memoryTaskGroupRepo, mockConfig);
+        ProjectService toTest = new ProjectService(mockProjectRepo, memoryTaskGroupRepo, mockConfig, null);
         var result = toTest.createGroup(1, today);
         //assert
 

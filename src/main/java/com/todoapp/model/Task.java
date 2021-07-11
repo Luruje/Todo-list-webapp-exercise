@@ -29,8 +29,15 @@ public class Task extends AuditId{
 
     //for GroupTask DTO from projection use, safe task-creation
     public Task(String description, LocalDateTime deadline){
+        this(description, deadline, null);
+
+    }
+
+    public Task(String description, LocalDateTime deadline, TaskGroup group){
         this.setDescription(description);
         this.deadline=deadline;
+        if(group!=null)
+            this.group=group;
     }
     //setery getery powinny byc package
     public LocalDateTime getDeadline() {return deadline; }

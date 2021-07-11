@@ -4,16 +4,29 @@ import com.todoapp.model.Task;
 import com.todoapp.model.TaskRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import javax.sql.DataSource;
 import java.util.*;
 
 @Configuration
 public class TestConfiguration {
 
     @Bean
+    @Primary
+    @Profile("!integration")
+    DataSource e2eTestDataSource(){
+        var source = new DriverManagerDataSource("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", ""); //flaga db_close_delay powstrzymuje baze danych przed zamknieciem po ostatnim polaczeniu
+        source.setDriverClassName("org.h2.Driver");
+        return source;
+    }
+
+    @Bean
+    @Primary
     @Profile("integration")
     TaskRepository testRepo(){
         return new TaskRepository() {
@@ -39,8 +52,17 @@ public class TestConfiguration {
             }
 
             @Override
-            public Task save(Task task) {
-                return tasks.put(tasks.size() + 1, task);
+            public Task save(Task entity) {
+                int key = tasks.size() + 1;
+                try {
+                    var field = Task.class.getDeclaredField("id");
+                    field.setAccessible(true);
+                    field.set(entity, key);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+                tasks.put(key, entity);
+                return tasks.get(key);
             }
 
             @Override
