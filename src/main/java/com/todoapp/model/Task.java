@@ -1,5 +1,7 @@
 package com.todoapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.processing.Generated;
@@ -21,16 +23,12 @@ public class Task extends AuditId{
     @Embedded
     private Audit audit = new Audit();
 
-//    @Transient    <- pozwala dodac kolumne, ktora nie bedzie zapisana w bazie danych a jedynie wysylana np. jacksonem do pointendu
-//    private String isTransient;
-
     public Task() {
     }
 
     //for GroupTask DTO from projection use, safe task-creation
     public Task(String description, LocalDateTime deadline){
         this(description, deadline, null);
-
     }
 
     public Task(String description, LocalDateTime deadline, TaskGroup group){
@@ -44,7 +42,7 @@ public class Task extends AuditId{
 
     public void setDeadline(LocalDateTime deadline) {this.deadline = deadline; }
 
-
+    @JsonIgnore
     public TaskGroup getGroup() {
         return group;
     }

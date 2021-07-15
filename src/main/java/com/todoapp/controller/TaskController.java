@@ -17,6 +17,7 @@ import java.util.List;
 
 //@RepositoryRestController
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
 
     private final TaskRepository repository;
@@ -27,19 +28,19 @@ public class TaskController {
     }
 
 //    @RequestMapping(method = RequestMethod.GET, path = "/tasks")
-    @GetMapping(value = "/tasks", params = {"!sort", "!page", "!size"})
+    @GetMapping(params = {"!sort", "!page", "!size"})
     ResponseEntity<List<Task>> getAllTasks(){
         logger.warn("Default get method giving up all the tasks");
         return ResponseEntity.ok(repository.findAll());
     }
 
-    @GetMapping(value = "/tasks")
+    @GetMapping
     ResponseEntity<List<Task>> getAllTasks(Pageable page){
         logger.warn("Custom get method giving up all the tasks");
         return ResponseEntity.ok(repository.findAll(page).getContent());    //.getContent pozwala pobrac jedynie Liste, bez informacji dodanych do metody
 }
 
-    @PutMapping("/tasks/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<?> updateTask(@RequestBody Task updatedTask, @PathVariable int id){
         if(!repository.existsById(id))
             return ResponseEntity.notFound().build();
@@ -50,21 +51,20 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<?> getTask(@PathVariable int id){
         if(!repository.existsById(id))
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(repository.findById(id));
     }
 
-    @PostMapping("/tasks")
     ResponseEntity<?> postTask(@RequestBody Task toPost){
         Task result = repository.save(toPost);
         return ResponseEntity.ok(toPost);
     }
 
     @Transactional
-    @PatchMapping("/tasks/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable int id){
         if(!repository.existsById(id))
             return ResponseEntity.notFound().build();
@@ -72,6 +72,10 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    ResponseEntity<List<Task>> getDoneTasks(@RequestParam(defaultValue = "true") boolean state){
+        return ResponseEntity
+                .ok(repository.findByDone(state));
+    }
 
 //    public ResponseEntity<?> toggleTask(@PathVariable int id) {
 //        if (!repository.existsById(id)) {

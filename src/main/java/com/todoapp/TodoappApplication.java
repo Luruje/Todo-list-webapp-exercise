@@ -6,10 +6,13 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 
 import javax.validation.Validator;
+
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @ConfigurationPropertiesScan
 @SpringBootApplication
+@EnableAsync
 public class TodoappApplication  {
 	public static void main(String[] args) {
 		SpringApplication.run(TodoappApplication.class, args);

@@ -16,7 +16,14 @@ import java.util.List;
 interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer> {
 
     @Override
+    @Query(nativeQuery = true, value = "select count(*) > 0 from tasks where id=:id")
+    boolean existsById(@Param("id") Integer id);
+
+    @Override
     boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);    //metoda pozwalajaca stwierdzic czy mozna zamknac grupe 'taskow' sprawdzajac czy sa wszystkie wykonane
+
+    @Override
+    List<Task> findAllByGroup_Id(Integer groupId);
 
 //    @Override
 //    @Query(nativeQuery = true, value="select count(*) > 0 from tasks where id=?1")

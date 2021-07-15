@@ -43,4 +43,5 @@ public class TaskGroupService {
         foundGroup.setDone(!foundGroup.isDone());
         repository.save(foundGroup);
     }
+
 }

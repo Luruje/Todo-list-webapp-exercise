@@ -13,7 +13,7 @@ public class Project {
     @GenericGenerator(name = "inc", strategy = "increment")
     int id;
     String description;
-//jeden projekt do wielu grup taskow
+    //jeden projekt do wielu grup taskow
     @OneToMany(mappedBy = "project")
     private Set<TaskGroup> groups;
 

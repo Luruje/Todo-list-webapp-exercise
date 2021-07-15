@@ -9,8 +9,6 @@ public class GroupWriteModel {
     private String description;
     private Set<GroupTaskWriteModel> tasks;
 
-
-
     public String getDescription() {
         return description;
     }
