@@ -3,6 +3,8 @@ package com.todoapp.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
 import java.util.Set;
 
 @Entity
@@ -12,23 +14,23 @@ public class Project {
     @GeneratedValue(generator = "inc")
     @GenericGenerator(name = "inc", strategy = "increment")
     int id;
+    @NotBlank(message = "Project's description must not be empty")
     String description;
     //jeden projekt do wielu grup taskow
     @OneToMany(mappedBy = "project")
     private Set<TaskGroup> groups;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
-    private Set<ProjectStep> projectSteps;
+    private Set<ProjectStep> steps;
 
     public Project() {
     }
 
-    public Set<ProjectStep> getProjectSteps() {
-        return projectSteps;
+    public Set<ProjectStep> getSteps() {
+        return steps;
     }
 
-    public void setProjectSteps(Set<ProjectStep> projectSteps) {
-        this.projectSteps = projectSteps;
+    public void setSteps(Set<ProjectStep> steps) {
+        this.steps = steps;
     }
 
     public Set<TaskGroup> getGroups() {

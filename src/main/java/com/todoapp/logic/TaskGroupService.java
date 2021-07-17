@@ -1,11 +1,11 @@
 package com.todoapp.logic;
 
+import com.todoapp.model.Project;
 import com.todoapp.model.TaskGroup;
 import com.todoapp.model.TaskGroupRepository;
 import com.todoapp.model.TaskRepository;
 import com.todoapp.model.projection.GroupReadModel;
 import com.todoapp.model.projection.GroupWriteModel;
-import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
@@ -22,12 +22,16 @@ public class TaskGroupService {
         this.taskRepository = taskRepository;
     }
 
-    public GroupReadModel createGroup(GroupWriteModel source){
-        TaskGroup result = repository.save(source.toGroup());
+    public GroupReadModel saveGroup(GroupWriteModel source){
+        return saveGroup(source, null);
+    }
+
+    public GroupReadModel saveGroup(GroupWriteModel source, Project project){
+        TaskGroup result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 
-    public List<GroupReadModel> readAll(){
+    public List<GroupReadModel> getAllGroups(){
         return repository.findAll().stream()
                 .map(GroupReadModel::new)
                 .collect(Collectors.toList());

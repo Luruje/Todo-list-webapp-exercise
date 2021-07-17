@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xlmns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+    <!-- Defined class of border style which we pin up to each project -->
+    <style>
+        .Bd {
+            border: solid 1px black;
+        }
+
+        /* colors of errors */
+        .C\(red\){
+            color: red;
+        }
+
+        /* color of border for an error */
+        .Bdc\(red\){
+            border-color: red !important;
+        }
+
+        /*  also padding which is the beginning space gap for each project's step  */
+        .P\(0\){
+            padding: 0;
+        }
+
+        .P\(10px\){
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <!-- a message that comes from ProjectController -->
+        <h1 th:if="${message != null}" th:text="${message}"></h1>
+        <!-- thats List<Project> getProjects() method from ProjectController -->
+        <dl th:each="project : ${projects}" class="Bd P(10px)">
+            <dt th:text="${project.description}">...</dt>
+            <dd>
+                <ul class="P(0)">
+                    <li th:each="step : ${project.steps}" th:text="${step.description} + ' ' + ${step.daysToDeadline} + 'dni'"></li>
+                </ul>
+                <!-- creating group from a project -->
+                <form action="#" method="post" th:action="@{/projects/{projectId}(projectId=${project.id})}">
+                    <label>Deadline
+                        <input name="deadline" type="datetime-local" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}T[0-9]{2}:[0-9]{2}">
+                    </label>
+                    <button type="submit">Create tasks</button>
+                </form>
+            </dd>
+        </dl>
+        <fieldset>
+                <legend>New project</legend>
+                <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
+                    <!-- in case of any errors detected during post method -->
+                    <!-- on the top of that in each input's (desc, desc, deadline) theres an reference to error which makes field red if its unvalid -->
+                    <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
+                    <!-- thats where the description of a project is going to be put by user -->
+                    <label>Description
+                        <input type="text" th:field="${project.description}" th:errorclass="'Bdc(red)'"/>  
+                    </label>
+                    <!-- POST: next we set values of project's step, which has 2 variables: description and daystodeadline -->
+                    <!-- th:each lets us create iterration on steps, stepStats is kind of status of this iteration -->
+                    <fieldset th:each = "step, stepStat : ${project.steps}">
+                        <legend th:text="'Step ' + ${stepStat.index + 1}"></legend>
+                        <label>Description
+                            <!-- since its spring app and its one instruction in another, we need to type index this way -->
+                            <input type="text" th:field="${project.steps[__${stepStat.index}__].description}" th:errorclass="'Bdc(red)'"/>  
+                        </label>
+                        <label>Deadline
+                            <input type="number" th:field="${project.steps[__${stepStat.index}__].daysToDeadline}" th:errorclass="'Bdc(red)'"/>  
+                        </label>
+                    </fieldset>
+                    <!-- one button to add new step, this button has an additional parameter 'addStep' to post method -->
+                    <div>
+                        <button type="sumbit" name="addStep">+</button>
+                    </div>
+                    <!-- two buttons with pre-defined functions -->
+                    <p>
+                        <button type="submit">Add</button>
+                        <button type="reset">Clear</button>
+                    </p>
+                </form>
+        </fieldset>
+    </main>
+    
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.todoapp.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = " project_steps")
@@ -12,11 +13,9 @@ public class ProjectStep {
     @GeneratedValue(generator = "inc")
     @GenericGenerator(name = "inc", strategy = "increment")
     int id;
-
+    @NotBlank(message = "Project's step description must not be empty!")
     String description;
-
     int daysToDeadline;
-
     //1 projekt do wielu krokow proejktu
     @ManyToOne
     @JoinColumn(name = "project_id")

@@ -27,8 +27,6 @@ public class GroupReadModel {
                 .collect(Collectors.toSet());
     }
 
-
-
     public int getId() {
         return id;
     }
