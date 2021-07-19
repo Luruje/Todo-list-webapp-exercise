@@ -2,6 +2,7 @@ package com.todoapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.todoapp.model.event.TaskEvent;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.processing.Generated;
@@ -37,6 +38,12 @@ public class Task extends AuditId{
         if(group!=null)
             this.group=group;
     }
+
+    public TaskEvent toggle(){
+        this.setDone(!this.isDone());
+        return TaskEvent.changed(this);
+    }
+
     //setery getery powinny byc package
     public LocalDateTime getDeadline() {return deadline; }
 
